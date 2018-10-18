@@ -1,0 +1,50 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply from: rootProject.file('buildsystem/dependencies.gradle')
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion build_versions.compile_sdk
+    defaultConfig {
+        applicationId "com.example.pavel.archexample"
+        minSdkVersion build_versions.min_sdk
+        targetSdkVersion build_versions.target_sdk
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+androidExtensions {
+    experimental = true
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    //Support
+    implementation deps.android.support.v7
+    implementation deps.android.support.designe
+    implementation deps.android.support.constraint
+
+    //Rx
+    implementation deps.rx
+
+    // Network
+    implementation deps.network.retrofit
+    implementation deps.network.okHttp
+    implementation deps.network.glide.api
+    kapt deps.network.glide.compiler
+
+    //Kotlin
+    implementation deps.kotlin.stdlib
+
+    //DI
+    implementation deps.koinDI
+}
