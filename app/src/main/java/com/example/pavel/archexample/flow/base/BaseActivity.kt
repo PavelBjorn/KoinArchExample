@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.support.annotation.LayoutRes
 import android.support.v7.app.AppCompatActivity
 import android.view.ViewGroup
+import org.koin.android.scope.ext.android.getOrCreateScope
+import org.koin.core.scope.Scope
 import java.lang.IllegalArgumentException
 
 
@@ -13,10 +15,13 @@ abstract class BaseActivity<V, P> : AppCompatActivity(), Contract.Controller<V, 
 
     override var view: V? = null
 
+    override var scope: Scope? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(getContentViewLayoutRes())
         view = getContentView()
+        scope = getOrCreateScope(scopeName())
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -31,6 +36,12 @@ abstract class BaseActivity<V, P> : AppCompatActivity(), Contract.Controller<V, 
     override fun onStop() {
         presenter.detachView()
         super.onStop()
+    }
+
+    override fun onDestroy() {
+        scope?.close()
+        scope = null
+        super.onDestroy()
     }
 
     @LayoutRes
@@ -49,4 +60,5 @@ abstract class BaseActivity<V, P> : AppCompatActivity(), Contract.Controller<V, 
     inline fun <D> LiveData<D>.observe(crossinline observer: (D) -> Unit) {
         observe(this@BaseActivity, Observer { data -> data?.let { observer.invoke(it) } })
     }
+
 }

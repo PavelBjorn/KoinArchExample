@@ -1,5 +1,7 @@
 package com.example.pavel.archexample.flow.base
 
+import org.koin.core.scope.Scope
+
 interface Contract {
 
     interface Controller<V, P> where V : BaseView, P : Presenter<V> {
@@ -7,6 +9,10 @@ interface Contract {
         val presenter: P
 
         var view: V?
+
+        var scope: Scope?
+
+        fun scopeName(): String
     }
 
     interface Presenter<V : BaseView> {

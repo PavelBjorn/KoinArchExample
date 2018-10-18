@@ -14,4 +14,6 @@ class SplashActivity : BaseActivity<SplashPresenter.SplashView, SplashPresenter>
     override fun onAttachFragment(fragment: Fragment?) {
         super.onAttachFragment(fragment)
     }
+
+    override fun scopeName() = "Splash"
 }

@@ -4,6 +4,6 @@ import org.koin.dsl.context.ModuleDefinition
 
 val SplashModule: ModuleDefinition.() -> Unit = {
     module("test") {
-        factory { SplashPresenter() }
+        scope("Splash") { SplashPresenter() }
     }
 }
